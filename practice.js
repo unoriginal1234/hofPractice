@@ -25,12 +25,29 @@ var moreFruits = function (fruits) {
 // use _.each to traverse the number array and determine
 // which are multiples of five.
 var multiplesOfFive = function (numbers) {
+  var result = 0;
 
+  _.each(numbers, function(number, index, collection) {
+
+    if (number % 5 === 0) {
+      result++;
+    }
+  });
+
+  return result;
 };
 
 // use _.each to build an array containing only tweets belonging to a specified user.
 var getUserTweets = function(tweets, user) {
+  var results = [];
 
+  _.each(tweets, function(tweet, index, collection) {
+    if (tweet.user === user) {
+      results.push(tweet);
+    }
+  });
+
+  return results;
 };
 
 /*
@@ -41,23 +58,31 @@ var getUserTweets = function(tweets, user) {
 
 // use _.filter to return the fruits array with only the desired fruit.
 var onlyOneFruit = function (fruits, targetFruit) {
-
+  return _.filter(fruits, function(fruit, index, collection) {
+    return fruit === targetFruit;
+  });
 };
 
 // use _.filter to return the fruits array with only fruits
 // starting with the letter 'P'.
 var startsWith = function (fruits, letter) {
-
+  return _.filter(fruits, function(fruit, index, collection) {
+    return fruit[0] === letter;
+  });
 };
 
 // return a filtered array containing only cookie-type desserts.
 var cookiesOnly = function (desserts) {
-
+  return _.filter(desserts, function(dessert, index, collection) {
+    return dessert.type === 'cookie';
+  });
 };
 
 // rebuild the getUserTweets function from above with _.filter instead
 var filterUserTweets = function(tweets, user) {
-
+  return _.filter(tweets, function(tweet, index, collection) {
+    return tweet.user === user;
+  });
 };
 
 /*
@@ -69,7 +94,9 @@ var filterUserTweets = function(tweets, user) {
 // given an array of strings, use _.map to return a new array containing all
 // strings converted to uppercase letters.
 var upperCaseFruits = function (fruits) {
-
+  return _.map(fruits, function(fruit, index, collection) {
+    return fruit.toUpperCase();
+  });
 };
 
 // given an array of dessert objects, return a new array of objects
@@ -77,12 +104,19 @@ var upperCaseFruits = function (fruits) {
 // TIP: Items that contain flour are not gluten-free.
 var glutenFree = function (desserts) {
 
+  return _.map(desserts, function(dessert, index, collection) {
+    dessert.ingredients.includes('flour') ? dessert.glutenFree = false : dessert.glutenFree = true;
+    return dessert;
+  });
+
 };
 
 // given an array of tweet objects, return a new array of strings
 // containing only the message properties.
 var allUserMessages = function(tweets) {
-
+  return _.map(tweets, function(tweet, index, collection) {
+    return tweet.message;
+  });
 };
 
 // use _.map to return an array of items with their sale prices, with a new property
@@ -106,7 +140,13 @@ var allUserMessages = function(tweets) {
 
 */
 var applyCoupon = function (groceries, coupon) {
+  // use toFixed(2) to round to the second decimal place
+  return _.map(groceries, function(grocery, index, collection) {
+    var priceFloat = parseFloat(grocery.price.slice(1));
 
+    grocery.salePrice = '$' + ((priceFloat - priceFloat * coupon).toFixed(2)).toString();
+    return grocery;
+  });
 };
 
 /*
@@ -117,13 +157,18 @@ var applyCoupon = function (groceries, coupon) {
 
 // return the total price of all products.
 var sumTotal = function (products) {
-
+  return _.reduce(products, function(accumulator, product) {
+    return accumulator + parseFloat(product.price.slice(1));
+  }, 0);
 };
 
 // return an object consisting of dessert types and how many of each.
 // exampleOutput: { dessertType: 3, dessertType2: 1 }
 var dessertCategories = function (desserts) {
-
+  return _.reduce(desserts, function(acc, cur) {
+    acc[cur.type] === undefined ? acc[cur.type] = 1 : acc[cur.type]++;
+    return acc;
+  }, {});
 };
 
 // return an object with the proper count of all user messages
@@ -138,7 +183,10 @@ var dessertCategories = function (desserts) {
   }
 */
 var countMessagesPerUser = function(tweets) {
-
+  return _.reduce(tweets, function(acc, cur) {
+    acc[cur.user] === undefined ? acc[cur.user] = 1 : acc[cur.user]++;
+    return acc;
+  }, {});
 };
 
 // given an array of movie data objects,return an array containing
