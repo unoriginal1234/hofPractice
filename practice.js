@@ -193,12 +193,22 @@ var countMessagesPerUser = function(tweets) {
 // movies that came out between 1990 and 2000.
 // TIP: use an array as your accumulator - don't push to an external array!
 var ninetiesKid = function (movies) {
-
+  return _.reduce(movies, function(acc, cur) {
+    if (cur.releaseYear >= 1990 && cur.releaseYear <= 2000) {
+      acc.push(cur.title);
+    }
+    return acc;
+  }, []);
 };
 
 // return an boolean stating if there exists a movie with a shorter
 // runtime than your time limit.
 // timeLimit is an integer representing a number of minutes.
 var movieNight = function (movies, timeLimit) {
-
+  return _.reduce(movies, function(acc, cur) {
+    if (cur.runtime < timeLimit) {
+      acc = true;
+    }
+    return acc;
+  }, false);
 };
